@@ -1,0 +1,26 @@
+# Default values for TMKMS
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: "ghcr.io/charlesjudith/tmkms-docker"
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+chain:
+  name: chihuahua
+  moniker: yourminikerhere
+  chainId: chihuahua-1
+  pub: chihuahuapub
+  valconspub: chihuahuavalconspub
+  privValidatorLaddr: "tcp://chihuahua-validator.chihuahua.svc.cluster.local:26659"
+  app: chihuahua-validator
+
+validator:
+  nodeKey: "K1NYOVFlWUZubWhaK0krT3BwdmRKL3lzQVBlT0VHaXNSbEZ1aGcwdUhCTT0="
+  privKey: "MmtUa3IxWUQ0NXlIK3hxOWh0OVFnM0UvdTJJQnpadlJ1d0Z1ayt6WUpyYz0="
+
+tmkms_local_storage:
+  capacity: 1Mi
+  path: /root/state/
+  host: ""

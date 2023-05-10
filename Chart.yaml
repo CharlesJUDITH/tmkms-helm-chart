@@ -1,0 +1,8 @@
+apiVersion: v2
+name: tmkms
+description: Installs a TMKMS instance (required)
+
+version: 0.1.0
+
+# Follow https://github.com/iqlusioninc/tmkms
+appVersion: 0.12.2

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tmkms-{{ .Values.chain.chainId }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "tmkms.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: tmkms
+  template:
+    metadata:
+      labels:
+        app: tmkms
+    spec:
+      volumes:
+      - name: tmkms-local-storage
+        emptyDir: {}
+      - name: tmkms-config
+        configMap:
+          name: tmkms-config
+      - name: tmkms-instance-key
+        secret:
+          secretName: tmkms-instance-key-secret
+      - name: tmkms-validator-key
+        secret:
+          secretName: tmkms-validator-key-secret
+      containers:
+      - name: tmkms
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        command: [ "/usr/local/cargo/bin/tmkms", "start", "-c", "/root/config/config.toml" ]
+        env:
+        - name: CHAIN_ID
+          value: "{{ .Values.chain.chainId }}"
+        - name: VALIDATOR_ADDR
+          value: "{{ .Values.chain.privValidatorLaddr }}"
+        volumeMounts:
+        - name: tmkms-local-storage
+          mountPath: /root/state/
+          readOnly: false
+        - name: tmkms-config
+          mountPath: /root/config/config.toml
+          subPath: config.toml
+        - name: tmkms-instance-key
+          mountPath: /root/secrets/kms-identity.key
+          subPath: kms-identity.key
+        - name: tmkms-validator-key
+          mountPath: /root/secrets/consensus.key
+          subPath: consensus.key

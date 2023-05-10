@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tmkms-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "tmkms.labels" . | nindent 4 }}
+data:
+  config.toml: |-
+    # Tendermint KMS configuration file
+    ## Signing Provider Configuration
+
+    ### Software-based Signer Configuration
+
+    [[providers.softsign]]
+    chain_ids = ["{{ .Values.chain.chainId }}"]
+    key_type = "consensus"
+    path = "/root/secrets/consensus.key"
+
+    ## Chain Configuration
+
+    ### Cosmos Hub Network
+
+    [[chain]]
+    id = "{{ .Values.chain.chainId }}"
+    key_format = { type = "bech32", account_key_prefix = "{{ .Values.chain.pub }}", consensus_key_prefix = "{{ .Values.chain.valconspub }}" }
+    state_file = "/root/state/{{ .Values.chain.chainId }}-consensus.json"
+
+    [[validator]]
+    chain_id = "{{ .Values.chain.chainId }}"
+    addr = "{{ .Values.chain.privValidatorLaddr }}"
+    secret_key = "/root/secrets/kms-identity.key"
+    protocol_version = "v0.34"
+    reconnect = true
+
