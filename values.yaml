@@ -17,8 +17,8 @@ chain:
   app: chihuahua-validator
 
 validator:
-  nodeKey: "K1NYOVFlWUZubWhaK0krT3BwdmRKL3lzQVBlT0VHaXNSbEZ1aGcwdUhCTT0="
-  privKey: "MmtUa3IxWUQ0NXlIK3hxOWh0OVFnM0UvdTJJQnpadlJ1d0Z1ayt6WUpyYz0="
+  nodeKey: "fhjksdkfsdfkjdsdfsDS"
+  privKey: "HFJDSJFJJSDFJSDAJFJHSDHKFKAJSD"
 
 tmkms_local_storage:
   capacity: 1Mi
